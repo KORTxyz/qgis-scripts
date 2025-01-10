@@ -1,21 +1,16 @@
 """
-
-Name : udtrækområde
-Group : 
+Unzip file
+Name : Unzipper
+Group : ETL
 With QGIS : 34000
 """
 
-from qgis.core import QgsProcessing, QgsProcessingAlgorithm
-
-from qgis.core import QgsProcessingParameterFile, QgsProcessingParameterFile
-
-from qgis.core import QgsProcessingOutputString, QgsProcessingOutputVariant
-
-from qgis.core import QgsProcessingUtils, QgsMessageLog
-
+from qgis.core import QgsProcessingAlgorithm
+from qgis.core import QgsProcessingParameterFile
+from qgis.core import QgsProcessingParameterFeatureSink
+from qgis.core import QgsProcessingOutputVariant
+from qgis.core import QgsProcessingUtils
 from qgis.core import QgsZipUtils
-
-from qgis.core  import Qgis
 
 import processing
 
@@ -24,11 +19,7 @@ class Unzipper(QgsProcessingAlgorithm):
     
     def initAlgorithm(self, config=None):
         self.addParameter(
-            QgsProcessingParameterFile('Zipfile',
-                'File to be unzipped', 
-                behavior=QgsProcessingParameterFile.File, 
-                fileFilter='Zip file (*.zip)'
-            )
+            QgsProcessingParameterFile('Zipfile','File to be unzipped', behavior=QgsProcessingParameterFile.File )
         )
         
         self.addParameter(
@@ -37,6 +28,10 @@ class Unzipper(QgsProcessingAlgorithm):
         
         self.addOutput(
             QgsProcessingOutputVariant('DISTFILES', 'List of unzipped files')
+        )
+
+        self.addParameter(
+            QgsProcessingParameterFeatureSink('FILE', 'First file in Zip')
         )
 
 
@@ -50,6 +45,7 @@ class Unzipper(QgsProcessingAlgorithm):
         outputs['UnzippedFiles'] = QgsZipUtils.unzip(parameters['Zipfile'],parameters['DIST'])
         
         results['DISTFILES'] = outputs['UnzippedFiles'][1]
+        results['FILE'] = outputs['UnzippedFiles'][1][0]
 
         
         return results

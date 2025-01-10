@@ -1,16 +1,15 @@
 """
-
-Name : udtrækområde
-Group : 
+Call a FTP server from QGIS
+Name : ftpCaller
+Group : ETL
 With QGIS : 34000
 """
 
-from qgis.core import QgsProcessing, QgsProcessingAlgorithm
-
-from qgis.core import QgsProcessingParameterString, QgsProcessingParameterNumber
-
-from qgis.core import QgsProcessingOutputString, QgsProcessingOutputFile, QgsProcessingOutputVariant
-
+from qgis.core import QgsProcessingAlgorithm
+from qgis.core import QgsProcessingParameterString
+from qgis.core import QgsProcessingOutputString
+from qgis.core import QgsProcessingParameterFeatureSink
+from qgis.core import QgsProcessingOutputVariant
 from qgis.core import QgsProcessingUtils
 from qgis.core import QgsMessageLog
 
@@ -94,8 +93,8 @@ class FTPcaller(QgsProcessingAlgorithm):
                 'Filepath from FTP'
             )
         )
-        self.addOutput(
-            QgsProcessingOutputFile(
+        self.addParameter(
+            QgsProcessingParameterFeatureSink(
                 'FILE',
                 'File from FTP'
             )
