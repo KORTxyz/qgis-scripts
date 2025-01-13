@@ -48,15 +48,21 @@ class DownloadDatafordelerMatriklen(QgsProcessingAlgorithm):
         # Unzip
         alg_params = {
            'DIST':'',
-           'Zipfile': outputs['Download']['OUTPUT'],
-           'FILE': parameters['Output']
+           'Zipfile': outputs['Download']['OUTPUT']
         }
-        
         outputs['Unzip'] = processing.run('script:Unzipper', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
 
-        results['Output'] = outputs['Unzip']['FILE']
+            
+        # Extract by expression
+        alg_params = {
+            'EXPRESSION': '1=1',
+            'INPUT': outputs['Unzip']['FIRSTFILE'],
+            'OUTPUT': parameters['Output']
+        }
         
-        return results
+        outputs['ExtractByExpression'] = processing.run('native:extractbyexpression', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
+        print(outputs['ExtractByExpression']['OUTPUT'])
+        return {'Output':outputs['ExtractByExpression']['OUTPUT']}
 
     def name(self):
         return'DownloadDatafordelerMatriklen'

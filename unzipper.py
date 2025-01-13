@@ -4,10 +4,12 @@ Name : Unzipper
 Group : ETL
 With QGIS : 34000
 """
+import os
+
 
 from qgis.core import QgsProcessingAlgorithm
 from qgis.core import QgsProcessingParameterFile
-from qgis.core import QgsProcessingParameterFeatureSink
+from qgis.core import QgsProcessingOutputFile
 from qgis.core import QgsProcessingOutputVariant
 from qgis.core import QgsProcessingUtils
 from qgis.core import QgsZipUtils
@@ -30,12 +32,12 @@ class Unzipper(QgsProcessingAlgorithm):
             QgsProcessingOutputVariant('DISTFILES', 'List of unzipped files')
         )
 
-        self.addParameter(
-            QgsProcessingParameterFeatureSink('FILE', 'First file in Zip')
+        self.addOutput(
+            QgsProcessingOutputFile('FIRSTFILE', 'First file in Zip')
         )
 
 
-    def processAlgorithm(self, parameters, context, model_feedback):
+    def processAlgorithm(self, parameters, context, feedback):
         results = {}
         outputs = {}
         
@@ -44,9 +46,9 @@ class Unzipper(QgsProcessingAlgorithm):
    
         outputs['UnzippedFiles'] = QgsZipUtils.unzip(parameters['Zipfile'],parameters['DIST'])
         
+        
         results['DISTFILES'] = outputs['UnzippedFiles'][1]
-        results['FILE'] = outputs['UnzippedFiles'][1][0]
-
+        results['FIRSTFILE'] = outputs['UnzippedFiles'][1][0]
         
         return results
 

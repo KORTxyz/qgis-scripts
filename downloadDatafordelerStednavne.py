@@ -49,12 +49,12 @@ class DownloadDatafordelerStednavne(QgsProcessingAlgorithm):
         alg_params = {
             'DIST': '',
             'Zipfile': outputs['Download']['OUTPUT'],
-            'FILE': parameters['Output']
+            'FIRSTFILE': parameters['Output']
         }
         
         outputs['Unzip'] = processing.run('script:Unzipper', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
 
-        results['Output'] = outputs['Unzip']['FILE']
+        results['Output'] = outputs['Unzip']['FIRSTFILE']
         
         return results
 
