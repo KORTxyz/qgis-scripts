@@ -36,7 +36,7 @@ class DownloadDatafordelerStednavne(QgsProcessingAlgorithm):
         alg_params = {
             'DATA': '',
             'METHOD': 0,  # GET
-            'URL': 'https://api.datafordeler.dk/FileDownloads/GetFile?Register=DS&type=Current&LatestTotalForEntity='+ parameters["entity"] +'&format=gpkg&username=' +  parameters["username"]  + '&password=' + parameters["password"] ,
+            'URL': 'https://api.datafordeler.dk/FileDownloads/GetFile?Register=DS&type=' +  parameters["type"]  + '&LatestTotalForEntity='+ parameters["entity"] +'&format=gpkg&username=' +  parameters["username"]  + '&password=' + parameters["password"] ,
             'OUTPUT': QgsProcessing.TEMPORARY_OUTPUT
         }
         outputs['Download'] = processing.run('native:filedownloader', alg_params, context=context, feedback=feedback, is_child_algorithm=True)
